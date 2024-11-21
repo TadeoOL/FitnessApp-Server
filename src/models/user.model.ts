@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { IUser } from '../interfaces/user.interface';
 
-export interface IUserDocument extends Omit<IUser, 'id'> , Document {
+export interface IUserDocument extends Omit<IUser, '_id'> , Document {
+  _id: string;
   createdAt: Date;
   updatedAt: Date;
 }

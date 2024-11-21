@@ -5,7 +5,7 @@ import { IUser, IDataStoredInToken, ITokenData } from '../interfaces/user.interf
 export class JwtService {
   public generateToken(user: IUser): ITokenData {
     const dataStoredInToken: IDataStoredInToken = {
-      id: user.id!,
+      id: user._id,
       email: user.email
     };
 

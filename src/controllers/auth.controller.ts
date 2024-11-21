@@ -71,7 +71,7 @@ export default class AuthController {
         message: 'Email verified successfully',
         token: tokenData.token,
         user: {
-          id: user.id,
+          _id: user._id,
           email: user.email,
           name: user.name
         }

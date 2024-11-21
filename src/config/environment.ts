@@ -10,10 +10,6 @@ interface Config {
   jwtSecret: string;
   emailUser: string;
   emailPassword: string;
-  googleClientId: string;
-  googleClientSecret: string;
-  googleRefreshToken: string;
-  googleRedirectUri: string;
 }
 
 const config: Config = {
@@ -23,10 +19,6 @@ const config: Config = {
   jwtSecret: process.env.JWT_SECRET || 'your-secret-key',
   emailUser: process.env.EMAIL_USER || 'your-email@example.com',
   emailPassword: process.env.EMAIL_PASSWORD || 'your-email-password',
-  googleClientId: process.env.GOOGLE_CLIENT_ID,
-  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-  googleRedirectUri: process.env.GOOGLE_REDIRECT_URI || 'https://developers.google.com/oauthplayground'
 };
 
 export default config; 

@@ -8,7 +8,7 @@ export default class UserController {
     try {
       const users = await User.find();
       res.status(200).json(users);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
       next(new HttpException(500, 'Error getting users'));
     }
@@ -22,7 +22,7 @@ export default class UserController {
         throw new HttpException(404, 'User not found');
       }
       res.status(200).json(user);
-    } catch (error) {
+    } catch (error: any) {
       next(new HttpException(error.status, error.message));
     }
   }
@@ -31,17 +31,15 @@ export default class UserController {
     try {
       const { id } = req.params;
       const { name, email } = req.body;
-      if (!name || !email) {
-        throw new HttpException(400, 'Name and email are required');
-      }
       const updatedUser = await User.findByIdAndUpdate(id, { name, email }, { new: true });
+      console.log({updatedUser});
       const user: Omit<IUser, 'password'> = {
-        id: updatedUser.id,
-        email: updatedUser.email,
-        name: updatedUser.name,
+        _id: updatedUser?.id as string,
+        email: updatedUser?.email as string,
+        name: updatedUser?.name as string,
       }
       res.status(200).json(user);
-    } catch (error) {
+    } catch (error: any) {
       next(new HttpException(error.status, error.message));
     }
   }
