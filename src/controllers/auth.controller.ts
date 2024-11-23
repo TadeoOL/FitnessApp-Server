@@ -6,6 +6,7 @@ import jwtService from '../services/jwt.service';
 import crypto from 'crypto';
 import emailService from '../services/email.service';
 import { UserModel } from '../models/entities/user.model';
+import { getMessage } from '../locales';
 
 export default class AuthController {
   public async register(req: Request, res: Response, next: NextFunction) {
@@ -14,7 +15,7 @@ export default class AuthController {
 
       const existingUser = await UserModel.findOne({ email });
       if (existingUser) {
-        throw new HttpException(400, 'User already exists');
+        throw new HttpException(400, 'auth', 'USER_ALREADY_EXISTS');
       }
 
       const verificationToken = crypto.randomBytes(32).toString('hex');
@@ -35,7 +36,7 @@ export default class AuthController {
       await emailService.sendVerificationEmail(email, verificationToken);
 
       res.status(201).json({
-        message: 'Registration successful. Please check your email to verify your account.',
+        message: getMessage(req.language || 'en', 'auth', 'REGISTRATION_SUCCESSFUL'),
         user: {
           id: newUser.id,
           email: newUser.email,
@@ -57,7 +58,7 @@ export default class AuthController {
       });
 
       if (!user) {
-        throw new HttpException(400, 'Invalid or expired verification code');
+        throw new HttpException(400, 'auth', 'INVALID_OR_EXPIRED_VERIFICATION_CODE');
       }
 
       user.isVerified = true;
@@ -87,22 +88,22 @@ export default class AuthController {
 
       const user = await UserModel.findOne({ email });
       if (!user) {
-        throw new HttpException(401, 'User not found');
+        throw new HttpException(401, 'auth', 'USER_NOT_FOUND');
       }
 
       if (!user.isVerified) {
-        throw new HttpException(401, 'Please verify your email first');
+        throw new HttpException(401, 'auth', 'EMAIL_NOT_VERIFIED');
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
-        throw new HttpException(401, 'Invalid password');
+        throw new HttpException(401, 'auth', 'INVALID_PASSWORD');
       }
 
       const tokenData = jwtService.generateToken(user);
 
       res.status(200).json({
-        message: 'Login successful',
+        message: getMessage(req.language || 'en', 'auth', 'LOGIN_SUCCESSFUL'),
         token: tokenData.token,
         user: {
           id: user.id,
@@ -118,10 +119,10 @@ export default class AuthController {
   public async logout(req: Request, res: Response, next: NextFunction) {
     try {
       // TODO: Implement logout logic
-      res.status(200).json({ message: 'Logout successful' });
+      res.status(200).json({ message: getMessage(req.language || 'en', 'auth', 'LOGOUT_SUCCESSFUL') });
     } catch (error) {
       console.log(error);
-      next(new HttpException(500, 'Error during logout'));
+      next(new HttpException(500, 'errors', 'ERROR_DURING_LOGOUT'));
     }
   }
 
@@ -129,12 +130,12 @@ export default class AuthController {
     try {
       // TODO: Implement refresh token logic
       res.status(200).json({
-        message: 'Token refreshed',
+        message: getMessage(req.language || 'en', 'auth', 'TOKEN_REFRESHED'),
         token: 'new-jwt-token'
       });
     } catch (error) {
       console.log(error);
-      next(new HttpException(401, 'Invalid refresh token'));
+      next(new HttpException(401, 'auth', 'INVALID_REFRESH_TOKEN'));
     }
   }
 } 

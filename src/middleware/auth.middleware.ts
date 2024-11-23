@@ -1,31 +1,30 @@
-import { Request, Response, NextFunction } from 'express';
+import {  Response, NextFunction, Request } from 'express';
+import { Types } from 'mongoose';
 import { HttpException } from './error.middleware';
 import jwtService from '../services/jwt.service';
-import { IRequestUser } from '../interfaces/user.interface';
 
 const authMiddleware = async (
   req: Request,
   _res: Response,
   next: NextFunction
-): Promise<void> => {
+) => {
   try {
     const authorization = req.headers.authorization;
     
     if (!authorization) {
-      throw new HttpException(401, 'Authentication token missing');
+      throw new HttpException(401, 'auth', 'TOKEN_MISSING');
     }
 
     const token = authorization.split('Bearer ')[1];
     
     if (!token) {
-      throw new HttpException(401, 'Authentication token missing');
+      throw new HttpException(401, 'auth', 'TOKEN_MISSING');
     }
 
     const decodedToken = jwtService.verifyToken(token);
     
-    // Create a RequestUser object from the decoded token
-    const userData: IRequestUser = {
-      id: decodedToken.id,
+    const userData = {
+      id: new Types.ObjectId(decodedToken.id).toString(),
       email: decodedToken.email
     };
     
@@ -33,7 +32,7 @@ const authMiddleware = async (
     next();
   } catch (error) {
     console.log(error);
-    next(new HttpException(401, 'Invalid authentication token'));
+    next(new HttpException(401, 'auth', 'INVALID_TOKEN'));
   }
 };
 

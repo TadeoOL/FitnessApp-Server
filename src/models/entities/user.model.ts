@@ -19,6 +19,13 @@ export class User extends BaseModel {
 
   @prop()
   verificationTokenExpires?: Date;
+
+  @prop({
+    type: String,
+    enum: ['es', 'en'],
+    default: 'en'
+  })
+  language!: string;
 }
 
 export const UserModel = getModelForClass(User); 

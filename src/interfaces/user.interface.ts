@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export interface IUser {
-  _id: Types.ObjectId;
+  id: Types.ObjectId;
   email: string;
   password: string;
   name: string;
@@ -28,6 +28,6 @@ export interface IDataStoredInToken {
 }
 
 export interface IRequestUser {
-  id: Types.ObjectId;
+  id: string;
   email: string;
 } 
