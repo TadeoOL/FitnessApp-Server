@@ -5,14 +5,14 @@ import bcrypt from 'bcrypt';
 import jwtService from '../services/jwt.service';
 import crypto from 'crypto';
 import emailService from '../services/email.service';
-import User from '../models/user.model';
+import { UserModel } from '../models/entities/user.model';
 
 export default class AuthController {
   public async register(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password, name } = req.body;
 
-      const existingUser = await User.findOne({ email });
+      const existingUser = await UserModel.findOne({ email });
       if (existingUser) {
         throw new HttpException(400, 'User already exists');
       }
@@ -23,7 +23,7 @@ export default class AuthController {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const newUser = await User.create({
+      const newUser = await UserModel.create({
         email,
         password: hashedPassword,
         name,
@@ -51,7 +51,7 @@ export default class AuthController {
     try {
       const { code } = req.body;
 
-      const user = await User.findOne({
+      const user = await UserModel.findOne({
         verificationToken: new RegExp(`^${code}`, 'i'),
         verificationTokenExpires: { $gt: Date.now() }
       });
@@ -85,7 +85,7 @@ export default class AuthController {
     try {
       const { email, password }: ILoginData = req.body;
 
-      const user = await User.findOne({ email });
+      const user = await UserModel.findOne({ email });
       if (!user) {
         throw new HttpException(401, 'User not found');
       }
@@ -99,7 +99,7 @@ export default class AuthController {
         throw new HttpException(401, 'Invalid password');
       }
 
-      const tokenData = jwtService.generateToken(user as IUser);
+      const tokenData = jwtService.generateToken(user);
 
       res.status(200).json({
         message: 'Login successful',

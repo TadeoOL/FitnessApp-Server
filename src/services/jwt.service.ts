@@ -1,15 +1,17 @@
 import jwt from 'jsonwebtoken';
 import config from '../config/environment';
 import { IUser, IDataStoredInToken, ITokenData } from '../interfaces/user.interface';
+import { User } from '../models/entities/user.model';
+import { DocumentType } from '@typegoose/typegoose';
 
 export class JwtService {
-  public generateToken(user: IUser): ITokenData {
+  public generateToken(user: DocumentType<User>): ITokenData {
     const dataStoredInToken: IDataStoredInToken = {
-      id: user._id,
+      id: user._id ,
       email: user.email
     };
 
-    const expiresIn = 60 * 60 * 24; // 24 hours
+    const expiresIn = 60 * 60 * 24;
 
     return {
       expiresIn,

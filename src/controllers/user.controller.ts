@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpException } from '../middleware/error.middleware';
-import User from '../models/user.model';
+import { UserModel } from '../models/entities/user.model';
 import { IUser } from 'src/interfaces/user.interface';
 
 export default class UserController {
   public async getUsers(_req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await User.find();
+      const users = await UserModel.find();
       res.status(200).json(users);
     } catch (error: any) {
       console.log(error);
@@ -17,7 +17,7 @@ export default class UserController {
   public async getUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const user = await User.findById(id);
+      const user = await UserModel.findById(id);
       if (!user) {
         throw new HttpException(404, 'User not found');
       }
@@ -31,10 +31,10 @@ export default class UserController {
     try {
       const { id } = req.params;
       const { name, email } = req.body;
-      const updatedUser = await User.findByIdAndUpdate(id, { name, email }, { new: true });
+      const updatedUser = await UserModel.findByIdAndUpdate(id, { name, email }, { new: true });
       console.log({updatedUser});
       const user: Omit<IUser, 'password'> = {
-        _id: updatedUser?.id as string,
+        _id: updatedUser?.id,
         email: updatedUser?.email as string,
         name: updatedUser?.name as string,
       }
@@ -47,7 +47,7 @@ export default class UserController {
   public async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      await User.findByIdAndDelete(id);
+      await UserModel.findByIdAndDelete(id);
       res.status(200).json({ message: `Delete user ${id}` });
     } catch (error) {
       console.log(error);
