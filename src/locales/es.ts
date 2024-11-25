@@ -22,6 +22,23 @@ export const es = {
     INTERNAL_ERROR: 'Error interno del servidor',
     INVALID_REQUEST: 'Solicitud inválida',
     UNAUTHORIZED: 'Acceso no autorizado',
-    ERROR_DURING_LOGOUT: 'Error durante el cierre de sesión'
+    ERROR_DURING_LOGOUT: 'Error durante el cierre de sesión',
+    EXERCISE_ALREADY_IN_ROUTINE: 'Ejercicio ya existe en la rutina'
+  },
+  muscleGroups: {
+    CHEST: 'Pecho',
+    BACK: 'Espalda',
+    LEGS: 'Piernas',
+    SHOULDERS: 'Hombros',
+    BICEPS: 'Bíceps',
+    TRICEPS: 'Tríceps',
+    ABS: 'Abdominales'
+  },
+  equipment: {
+    BARBELL: 'Barra',
+    DUMBBELL: 'Mancuerna',
+    MACHINE: 'Máquina',
+    CABLE: 'Cable',
+    BODYWEIGHT: 'Peso Corporal'
   }
 }; 

@@ -8,7 +8,7 @@ export const languageMiddleware = (
 ) => {
   const langHeader = req.headers['x-custom-language'] as Language;
   const acceptLanguage = req.headers['accept-language'];
-  const DEFAULT_LANGUAGE: Language = 'en';
+  const DEFAULT_LANGUAGE: Language = 'es';
   
   const isValidLanguage = (lang: string): lang is Language => 
     ['en', 'es'].includes(lang);

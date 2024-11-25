@@ -22,6 +22,23 @@ export const en = {
     INTERNAL_ERROR: 'Internal server error',
     INVALID_REQUEST: 'Invalid request',
     UNAUTHORIZED: 'Unauthorized access',
-    ERROR_DURING_LOGOUT: 'Error during logout'
+    ERROR_DURING_LOGOUT: 'Error during logout',
+    EXERCISE_ALREADY_IN_ROUTINE: 'Exercise already exists in the routine' 
+  },
+  muscleGroups: {
+    CHEST: 'Chest',
+    BACK: 'Back',
+    LEGS: 'Legs',
+    SHOULDERS: 'Shoulders',
+    BICEPS: 'Biceps',
+    TRICEPS: 'Triceps',
+    ABS: 'Abs'
+  },
+  equipment: {
+    BARBELL: 'Barbell',
+    DUMBBELL: 'Dumbbell',
+    MACHINE: 'Machine',
+    CABLE: 'Cable',
+    BODYWEIGHT: 'Bodyweight'
   }
 }; 
