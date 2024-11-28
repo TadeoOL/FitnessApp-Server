@@ -1,5 +1,6 @@
-import { prop, getModelForClass } from '@typegoose/typegoose';
-import { BaseModel } from '../base.model';
+import { prop, getModelForClass, Ref } from "@typegoose/typegoose";
+import { BaseModel } from "../base.model";
+import { Mesocycle } from "./mesocycle";
 
 export class User extends BaseModel {
   @prop({ required: true, unique: true, lowercase: true })
@@ -22,10 +23,13 @@ export class User extends BaseModel {
 
   @prop({
     type: String,
-    enum: ['es', 'en'],
-    default: 'en'
+    enum: ["es", "en"],
+    default: "en",
   })
   language!: string;
+
+  @prop({ ref: () => Mesocycle })
+  mesocycles?: Ref<Mesocycle>[];
 }
 
-export const UserModel = getModelForClass(User); 
+export const UserModel = getModelForClass(User);

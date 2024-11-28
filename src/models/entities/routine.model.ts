@@ -5,7 +5,7 @@ import { Exercise } from './exercise.model';
 
 export class RoutineExercise {
   @prop({ required: true, ref: () => Exercise })
-  exercise!: Ref<Exercise>;
+  exerciseId!: Ref<Exercise>;
 
   @prop({ required: true })
   order!: number;

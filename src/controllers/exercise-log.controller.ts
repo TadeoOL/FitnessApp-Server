@@ -34,8 +34,7 @@ export class ExerciseLogController {
         exerciseId
       })
       .sort({ date: -1 })
-      .populate('exerciseId');
-
+      
       res.json(logs);
     } catch (error) {
       next(createHttpError(500, 'errors', 'INTERNAL_ERROR'));
