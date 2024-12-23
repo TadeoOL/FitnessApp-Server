@@ -30,6 +30,9 @@ export class User extends BaseModel {
 
   @prop({ ref: () => Mesocycle })
   mesocycles?: Ref<Mesocycle>[];
+
+  @prop({ default: false })
+  hasCompletedSetup!: boolean;
 }
 
 export const UserModel = getModelForClass(User);

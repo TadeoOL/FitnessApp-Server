@@ -97,8 +97,7 @@ export class RoutineController {
     next: NextFunction
   ) {
     try {
-      const { routineId } = req.params;
-      const { exerciseId } = req.body;
+      const { routineId, exerciseId } = req.params;
       const routine = await RoutineModel.findById(routineId);
 
       if (!routine) {
@@ -129,6 +128,37 @@ export class RoutineController {
       res.json();
 
       const routine = await RoutineModel.findById(routineId);
+    } catch (error) {
+      console.log(error);
+      next(createHttpError(400, "errors", "INVALID_REQUEST"));
+    }
+  }
+
+  static async deleteRoutine(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { routineId } = req.params;
+      await RoutineModel.findByIdAndDelete(routineId);
+      res.status(204).send();
+    } catch (error) {
+      next(createHttpError(400, "errors", "INVALID_REQUEST"));
+    }
+  }
+
+  static async updateRoutine(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { routineId } = req.params;
+      const { name, description } = req.body;
+
+      const routine = await RoutineModel.findByIdAndUpdate(
+        routineId,
+        {
+          name,
+          description,
+        },
+        { new: true }
+      );
+
+      res.json(routine);
     } catch (error) {
       console.log(error);
       next(createHttpError(400, "errors", "INVALID_REQUEST"));
